@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 
 namespace NetPanel.Data
 {
@@ -20,6 +21,7 @@ namespace NetPanel.Data
         public int ProcId { get; set; }
 
         //meta
+        public bool IsBinary { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string AppDir { get; set; }
@@ -57,5 +59,32 @@ namespace NetPanel.Data
         public string AppId { get; set; }
         public string CommandText { get; set; }
         public string CommandName { get; set; }
+    }
+
+    [BsonNoId]
+    public class RconTask
+    {
+        public string AppId { get; set; }
+        public string Command { get; set; }
+        public CommandType Type { get; set; }
+        public DateTime LastExec { get; set; }
+        public TimeSpan Span { get; set; }
+
+        public void ExecuteShell()
+        {
+            var happ = Db.HostedApps.Find(x => x.Id == AppId).FirstOrDefault();
+            ProcessStartInfo startInfo = new ProcessStartInfo() { FileName = "/bin/bash", Arguments = $"{happ.AppDir}{Command}", };
+            Process proc = new Process() { StartInfo = startInfo, };
+            proc.Start();
+        }
+    }
+
+    public enum CommandType
+    {
+        None,
+        Shell,
+        Restart,
+        Shutdown,
+        Start
     }
 }

@@ -1,0 +1,51 @@
+﻿@page "/myapp/{AppId}"
+@using MongoDB.Driver
+@using NetPanel.Data
+
+@{
+    if (First)
+    {
+        First = false;
+        App = Db.HostedApps.Find(x => x.Id == AppId).FirstOrDefault();
+    }
+}
+<h3>Viewing @App.Name - @App.Id</h3>
+<br/>
+<h4>@App.Description</h4>
+<hr/>
+<div class="container btn-group-vertical">
+    <h5>Directory: @App.AppDir</h5>
+    @*<InputCheckbox Value="App.IsBinary">Is Binary Launcher</InputCheckbox>*@
+    <div>
+        <button @onclick="()=>App.IsBinary=true">Binary App</button>
+        <button @onclick="()=>App.IsBinary=false">Startup Command</button>
+    </div>
+    @if (App.IsBinary)
+    {
+
+    }
+    else
+    {
+
+    }
+    
+    <div class="container btn-group-vertical">
+        <h4>RCON</h4>
+        <hr/>
+        <h5>Restart at</h5><input placeholder="HOUR"/><input placeholder="DAY" />
+    </div>
+    
+    
+
+    <button @onclick="() => {
+                          Db.HostedApps.UpdateOne(x => x.Id == AppId, new ObjectUpdateDefinition<HostedApplication>(App));
+                      }">Save</button>
+</div>
+@code {
+    bool First = true;
+    
+    [Parameter]
+    public string AppId { get; set; }
+
+    HostedApplication App = new HostedApplication();
+}

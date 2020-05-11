@@ -1,4 +1,5 @@
-﻿@using System.IO
+﻿@page "/newapp"
+@using System.IO
 @using NetPanel.Data
 @using System.Linq;
 @using MongoDB.Driver
@@ -8,33 +9,49 @@
     <input placeholder="App Name" @bind-value="HostedApplication.Name"/>
     <textarea placeholder="Description" @bind="HostedApplication.Description"></textarea>
     <label>@info</label>
-    <button @onclick="@(() => {
+    <button class="btn btn-success" @onclick="@(() => {
+                            if (HostedApplication.Name.Length < 3)
+                            {
+                                info = "Name must be more than 4 characters";
+                                Task.Run(() => {
+                                    Task.Delay(2500).Wait();
+                                    InvokeAsync(() => info = string.Empty);
+                                });
+                                return;
+
+                            }
                             if (Db.HostedApps.CountDocuments(x=>x.Name == HostedApplication.Name) > 0)
                             {
+
                                 info = "Name already exists";
+                                Task.Run(() => {
+                                    Task.Delay(2500).Wait();
+                                    InvokeAsync(() => info = string.Empty);
+                                });
                             }
                             else
                             {
                                 Db.HostedApps.InsertOne(HostedApplication);
 
-                                if (!Directory.Exists($"/home/netpanel/apps/{HostedApplication.Id}")){
+                                if (!Directory.Exists($"/home/netpanelx/apps/{HostedApplication.Id}"))
+                                    Directory.CreateDirectory($"/home/netpanelx/apps");
 
-                                }
+                                info = $"Successfully created App: {HostedApplication.Id} with name {HostedApplication.Name}";
+                                Task.Run(() => {
+                                    Task.Delay(2500).Wait();
+                                    InvokeAsync(() =>
+                                    {
+                                        HostedApplication = new HostedApplication();
+                                        info = string.Empty;
+                                    });
 
-
-
-
-
+                                });
                             }
-                        })">Create</button>
+                        })">Create App</button>
 </div>
-
-
-
-
 
 @code {
     string info = String.Empty;
 
-    public HostedApplication HostedApplication { get; set; }
+    public HostedApplication HostedApplication = new HostedApplication();
 }
