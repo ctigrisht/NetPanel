@@ -1,0 +1,40 @@
+﻿@using System.IO
+@using NetPanel.Data
+@using System.Linq;
+@using MongoDB.Driver
+<h3>New Hosted App</h3>
+
+<div class="btn-group-vertical container">
+    <input placeholder="App Name" @bind-value="HostedApplication.Name"/>
+    <textarea placeholder="Description" @bind="HostedApplication.Description"></textarea>
+    <label>@info</label>
+    <button @onclick="@(() => {
+                            if (Db.HostedApps.CountDocuments(x=>x.Name == HostedApplication.Name) > 0)
+                            {
+                                info = "Name already exists";
+                            }
+                            else
+                            {
+                                Db.HostedApps.InsertOne(HostedApplication);
+
+                                if (!Directory.Exists($"/home/netpanel/apps/{HostedApplication.Id}")){
+
+                                }
+
+
+
+
+
+                            }
+                        })">Create</button>
+</div>
+
+
+
+
+
+@code {
+    string info = String.Empty;
+
+    public HostedApplication HostedApplication { get; set; }
+}

@@ -1,0 +1,19 @@
+﻿@page "/vshell"
+<div class="container" style="display: table-cell; justify-content: center">
+    <h2>Shell</h2>
+    <p>@ShellContent</p>
+    <textarea placeholder="Enter linux command"></textarea>
+    <button class="btn btn-outline-info">Execute</button>
+</div>
+@code {
+
+    async void ExecuteShellCmd(string command)
+    {
+
+    }
+
+
+
+    static string ShellContent = string.Empty;
+    string Command = string.Empty;
+}

@@ -1,0 +1,108 @@
+﻿@using System.IO
+@using NetPanel.Data
+<h3>Upload files to </h3>
+
+<InputFile multiple OnChange="HandleFileSelected" />
+
+@if (Files != null)
+{
+    <h3>Uploading files...</h3>
+    <a class="oi-loop-circular alert-primary"></a>
+
+
+}
+
+@code {
+    [Parameter]
+    public HostedApplication HostedApplication { get; set; }
+    //public HostedApplication HostedApplication = new HostedApplication()
+    //{
+    //    AppDir = "/home/apps",
+    //    Description = "gg",
+    //};
+
+
+
+    int numLines;
+    List<IFileListEntry> Files;
+
+    void HandleFileSelected(IFileListEntry[] files)
+    {
+        Files = files.ToList();
+    }
+
+    void SaveFilesToDir()
+    {
+        var existingF = Directory.GetFiles(HostedApplication.AppDir);
+        var existingN = new List<string>();
+        foreach (var s in existingF)
+        {
+            existingN.Add(s.Split('/', StringSplitOptions.RemoveEmptyEntries).Last());
+        }
+        int ptr = 0;
+        foreach (var fileListEntry in Files)
+        {
+            if (existingN.Contains(fileListEntry.Name))
+                File.Delete(existingF[ptr]);
+
+            //var barr = StreamHelper.
+
+            File.WriteAllBytesAsync(HostedApplication.AppDir, ReadToEnd(fileListEntry.Data));
+
+            ptr++;
+        }
+    }
+
+    public static byte[] ReadToEnd(System.IO.Stream stream)
+    {
+        long originalPosition = 0;
+
+        if(stream.CanSeek)
+        {
+            originalPosition = stream.Position;
+            stream.Position = 0;
+        }
+
+        try
+        {
+            byte[] readBuffer = new byte[4096];
+
+            int totalBytesRead = 0;
+            int bytesRead;
+
+            while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
+            {
+                totalBytesRead += bytesRead;
+
+                if (totalBytesRead == readBuffer.Length)
+                {
+                    int nextByte = stream.ReadByte();
+                    if (nextByte != -1)
+                    {
+                        byte[] temp = new byte[readBuffer.Length * 2];
+                        Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
+                        Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
+                        readBuffer = temp;
+                        totalBytesRead++;
+                    }
+                }
+            }
+
+            byte[] buffer = readBuffer;
+            if (readBuffer.Length != totalBytesRead)
+            {
+                buffer = new byte[totalBytesRead];
+                Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
+            }
+            return buffer;
+        }
+        finally
+        {
+            if(stream.CanSeek)
+            {
+                stream.Position = originalPosition;
+            }
+        }
+    }
+
+}
