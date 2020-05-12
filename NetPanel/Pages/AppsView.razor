@@ -1,0 +1,25 @@
+﻿@page "/myapps"
+@using MongoDB.Driver
+@using NetPanel.Data
+
+    <div class="container" style="background-color: gray; height: 15%">
+        <a href="/newapp" class="btn btn-outline-info">Create new</a>
+    </div>
+<div class="container">
+    @foreach (var i in Db.HostedApps.Find(FilterDefinition<HostedApplication>.Empty).ToList())
+    {
+    <div class="container">
+        <h3>@i.Name - @i.Id</h3><br />
+        <h4>@(i.IsRunning ? "Running" : "Stopped")</h4><br />
+        <button @onclick="@(() =>
+                          {
+                              NavMan.NavigateTo("/myapp/"+i.Id);
+                          })">EDIT</button>
+        <button>DELETE</button>
+
+    </div>
+    }
+</div>
+@code {
+
+}

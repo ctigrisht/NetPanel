@@ -2,33 +2,38 @@
 @using System.Diagnostics
 @using MongoDB.Driver
 @using NetPanel.Data
-<div class="container" style="display: table-cell; justify-content: center">
-    <h2>Shell</h2>
-    <p>@ShellContent</p>
-    <hr/>
-    <ul>
-        @foreach (var i in CommandHist)
-        {
-            <li>@i</li>
-        }
-    </ul>
-    <hr/>
-    <textarea placeholder="Enter linux command"></textarea>
-    <button class="btn btn-outline-info" @onclick="@(() =>
+    <div class="container" style="display: table-cell; justify-content: center">
+        <h2>Shell</h2>
+        <p>@ShellContent</p>
+
+        <textarea placeholder="Enter linux command"></textarea>
+        <button class="btn btn-outline-info" @onclick="@(() =>
                                                    {
                                                        try
                                                        {
                                                            ExecuteShell();
+                                                           CommandHist.Add(Command);
                                                        }
                                                        catch (Exception e)
                                                        {
                                                            info = e.ToString();
                                                        }
-                                                   })">Execute</button>
-    
-    <hr/>
-    <label></label>
-</div>
+                                                   })">
+            Execute
+        </button>
+
+        <hr />
+        <label>@info</label>
+
+        <hr />
+        <ul>
+            @foreach (var i in CommandHist)
+            {
+                <li>@i</li>
+            }
+        </ul>
+        <hr />
+    </div>
 @code {
     string info = string.Empty;
     public void ExecuteShell()
@@ -41,12 +46,14 @@
             proc.Start();
             while (!proc.HasExited)
             {
-                
+                CommandOutput += "\n" + proc.StandardOutput.ReadLine();
             }
         });
 
         proc.Dispose();
     }
+
+    static string CommandOutput = string.Empty;
 
     List<string> CommandHist = new List<string>();
 
