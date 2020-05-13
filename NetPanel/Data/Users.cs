@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using static System.String;
 
 namespace NetPanel.Data
 {
@@ -17,7 +18,8 @@ namespace NetPanel.Data
         public string Email { get; set; }
         public string HashedPwd { get; set; }
         public bool EmailOtp { get; set; }
-
+        public BasePermissions Perms { get; set; }
+        public string CustomPermScript = Empty;
         public int SendOtp()
         {
             var otp = new Random().Next(1001, 9999);

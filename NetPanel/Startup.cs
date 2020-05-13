@@ -29,6 +29,7 @@ namespace NetPanel
             services.AddRazorPages();
             services.AddBlazoredModal();
             services.AddServerSideBlazor();
+            services.AddBlazoredModal();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
