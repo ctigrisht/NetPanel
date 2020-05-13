@@ -17,33 +17,27 @@
     <h5>Directory: @App.AppDir</h5>
     @*<InputCheckbox Value="App.IsBinary">Is Binary Launcher</InputCheckbox>*@
     <div>
-        <button @onclick="()=>App.IsBinary=true">Binary App</button>
-        <button @onclick="()=>App.IsBinary=false">Startup Command</button>
+        <h5>Startup Command in @App.AppDir/</h5><input placeholder="sudo ./app arg1 arg2"/>
+
     </div>
-    @if (App.IsBinary)
-    {
-
-    }
-    else
-    {
-
-    }
-    
     <div class="container btn-group-vertical">
         <h4>RCON</h4>
         <hr/>
-        <h5>Restart at</h5><input placeholder="HOUR"/><input placeholder="DAY" />
+        <h5>Restart at</h5><input placeholder="HOUR"/><input placeholder="WEEK DAY" />
     </div>
     
     
-
-    <button @onclick="() => {
-                          Db.HostedApps.UpdateOne(x => x.Id == AppId, new ObjectUpdateDefinition<HostedApplication>(App));
-                      }">Save</button>
+    
+    <label>@info</label>
+    <button @onclick="@(() => {
+                          var r = Db.HostedApps.UpdateOne(x => x.Id == AppId, new ObjectUpdateDefinition<HostedApplication>(App));
+                                  if (r.IsAcknowledged) info = "Saved changes";
+                                  else info = "An error has occured";
+                      })">Save</button>
 </div>
 @code {
     bool First = true;
-    
+    string info = string.Empty;
     [Parameter]
     public string AppId { get; set; }
 
