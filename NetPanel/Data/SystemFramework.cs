@@ -70,15 +70,55 @@ namespace NetPanel.Data
                     FrameworkName = "PHP",
                     Version = "Latest",
                     Description = "PHP Runtime",
-
+                    InstallCommands = new List<string> {
+                        "sudo apt install php"
+                    }
+                },
+                new SystemFramework
+                {
+                    FrameworkName = "MySql",
+                    Version = "Latest",
+                    Description = "Relational database server",
+                    InstallCommands = new List<string> {
+                        "sudo apt install mysql"
+                    }
+                },
+                new SystemFramework
+                {
+                    FrameworkName = "PostGre Sql",
+                    Version = "Latest",
+                    Description = "Relational database server",
+                    InstallCommands = new List<string> {
+                        "sudo apt install postgresql postgresql-contrib"
+                    }
+                },
+                new SystemFramework
+                {
+                    FrameworkName = "Redis memory store",
+                    Version = "Latest",
+                    Description = "Key-Value pair memory store",
+                    InstallCommands = new List<string> {
+                        "sudo apt install redis"
+                    }
+                },
+                new SystemFramework {
+                    FrameworkName = "Nginx web server (installed by default)",
+                    Version = "Latest",
+                    Description = "High performance web server and reverse proxy",
                     InstallCommands = new List<string>()
                     {
-                        "sudo apt install php"
+                        "sudo apt install nginx"
                     }
                 },
                 new SystemFramework()
                 {
-
+                    FrameworkName = "LetsEncrypt Certbot",
+                    Version = "Latest",
+                    Description = "SSL/TLS Certificate generator from LetsEncrypt",
+                    InstallCommands = new List<string>()
+                    {
+                        "sudo apt install certbot"
+                    }
                 }
             };
 
