@@ -36,9 +36,9 @@ namespace NetPanel.Data
     {
         public Mock()
         {
-            var frameworks = new List<SystemFramework>()
+            var frameworks = new List<SystemFramework>
             {
-                new SystemFramework()
+                new SystemFramework
                 {
                     FrameworkName = ".NET Core Runtime",
                     Version = "3.1",
@@ -54,7 +54,7 @@ namespace NetPanel.Data
                         "sudo apt-get install dotnet-sdk-3.1",
                     }
                 },
-                new SystemFramework()
+                new SystemFramework
                 {
                     FrameworkName = "NodeJS",
                     Version = "Latest",
@@ -64,6 +64,21 @@ namespace NetPanel.Data
                     {
                         "sudo apt install nodejs"
                     }
+                },
+                new SystemFramework
+                {
+                    FrameworkName = "PHP",
+                    Version = "Latest",
+                    Description = "PHP Runtime",
+
+                    InstallCommands = new List<string>()
+                    {
+                        "sudo apt install php"
+                    }
+                },
+                new SystemFramework()
+                {
+
                 }
             };
 
