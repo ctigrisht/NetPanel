@@ -4,6 +4,10 @@ Panel for managing apps hosted on a linux machine
 ## Contributors
 All help is appreciated, just message me on discord `flkXI#3462`
 
+## Requirements
+* Local MongoDB install
+* .NET Core 3.1 Runtime (or compile as self contained, see https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish)
+
 ## All planned functionalities
 ### Hosted Applications Management
 * Choice between binary application startup or script startup

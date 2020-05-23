@@ -1,17 +1,36 @@
 ﻿@inherits LayoutComponentBase
 @using Blazored.Modal
-<div class="sidebar">
-    <NavMenu />
-</div>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+@if (Authed)
+{
+    <div class="sidebar">
+        <NavMenu />
     </div>
 
-    <div class="content px-4">
-        @Body
+    <div class="main">
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
     </div>
-</div>
+
+}
+else
+{
+    <AuthPanel SetAuthStat="new Action<bool>(b => {
+                                Authed = b;
+                                InvokeAsync(()=>StateHasChanged());
+                            })"/>
+}
+
+
 
 <BlazoredModal/>
+
+
+@code{
+    bool Authed = false;
+}
