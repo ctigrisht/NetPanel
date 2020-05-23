@@ -1,0 +1,32 @@
+﻿@page "/frameworks"
+@using MongoDB.Driver
+@using NetPanel.Data
+
+    <center>
+        <h2>Frameworks</h2>
+        <h4>Installed Frameworks</h4>
+        <hr />
+        @foreach(var f in Db.InstalledFrameworks.Find(x => x.Installed).ToList())
+        {
+            <div class="btn-group-vertical">
+                <h4>@f.FrameworkName</h4>
+                <h5>@f.Description</h5>
+            </div>
+        }
+
+        <h4>Available Frameworks</h4>
+        <hr />
+        @foreach (var f in Db.InstalledFrameworks.Find(x => !x.Installed).ToList())
+        {
+            <div class="btn-group-vertical">
+                <h4>@f.FrameworkName</h4>
+                <h5>@f.Description</h5>
+                <button @onclick="f.Install">Install</button>
+            </div>
+        }
+
+    </center>
+
+@code {
+
+}

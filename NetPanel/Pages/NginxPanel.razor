@@ -1,15 +1,35 @@
 ﻿@page "/nginxp"
+@using System.IO
 
 <h4>NGINX PANEL</h4>
 
 <div class="container">
     <h5>Reverse proxy configuration</h5>
+    <div>
+        <textarea class="flex-fill" placeholder="Reverse proxy configuration"></textarea>
+        <button @onclick="@(() => {
+                              File.WriteAllText("/etc/nginx/sites-enabled/netproxy.conf", ReverseProxyText);
+                          })">Save</button>
+    </div>
+    
 
     <hr/>
-    <h5>Static configuration</h5>
+    <h5>Static configuration (TODO)</h5>
 
 </div>
 
 @code {
+    protected override Task OnInitializedAsync(){
+        if (File.Exists("/etc/nginx/sites-enabled/netproxy.conf")){
+            ReverseProxyText = File.ReadAllText("/etc/nginx/sites-enabled/netproxy.conf");
+        }
+        else{
+            File.Create("/etc/nginx/sites-enabled/netproxy.conf");
+        }
+        return base.OnInitializedAsync();
+    }
 
+
+
+    string ReverseProxyText = string.Empty;
 }

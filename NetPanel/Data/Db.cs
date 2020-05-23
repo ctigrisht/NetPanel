@@ -15,5 +15,8 @@ namespace NetPanel.Data
             Database.GetCollection<HostedApplication>("HostedApps");
 
         public static IMongoCollection<User> Users = Database.GetCollection<User>("Users");
+
+        public static IMongoCollection<SystemFramework> InstalledFrameworks =
+            Database.GetCollection<SystemFramework>("InstalledFrameworks");
     }
 }

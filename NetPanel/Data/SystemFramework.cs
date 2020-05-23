@@ -32,9 +32,9 @@ namespace NetPanel.Data
         Arch
     }
 
-    public class Mock
+    public class PermanentFrameworks
     {
-        public Mock()
+        public PermanentFrameworks()
         {
             var frameworks = new List<SystemFramework>
             {
@@ -121,6 +121,11 @@ namespace NetPanel.Data
                     }
                 }
             };
+
+        }
+
+        public void AddFrameworksToDb()
+        {
 
         }
     }
