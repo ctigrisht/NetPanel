@@ -33,7 +33,7 @@ namespace NetPanel
                 }
             });
 
-            mdb.Wait();
+            //mdb.Wait();
             //TODO
 
 
@@ -41,8 +41,6 @@ namespace NetPanel
             Task.Run(delegate
             {
                 if (!Directory.Exists("/home/netpanel/apps")) Directory.CreateDirectory("/home/netpanel/apps");
-
-
             });
 
 

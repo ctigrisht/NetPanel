@@ -1,9 +1,78 @@
-﻿
-<center class="container border-light">
-    <input placeholder="Username"/>
-    <input placeholder="Password"/>
-</center>
+﻿@using MongoDB.Driver
+@using NetPanel.Data
+
+@if (Db.Users.CountDocuments(x => x.Perms == BasePermissions.God) > 0)
+{
+    <center class="container border-light">
+
+        <h1>NetPanel Login</h1>
+        <br/>
+        <br/>
+        <hr/>
+        <br/>
+
+        <div class="btn-group-vertical">
+            <h4>@Info</h4>
+            <hr/>
+            <input @bind="User.Username" placeholder="Username"/>
+            <input @bind="User.HashedPwd" placeholder="Password"/>
+            <button @onclick="@(() =>
+                              {
+                                  try
+                                  {
+                                      var u = Db.Users.Find(x => x.Username == User.Username).FirstOrDefault();
+                                      if (!(u is null) && u.HashedPwd == User.HashedPwd) {
+                                          GoodLogin = true;
+                                          Task.Run(() => SetAuthStat(true));
+                                      }
+                                      else
+                                      {
+                                          Info = "Bad login";
+                                          Task.Run(() => SetAuthStat(false));
+                                      }
+                                  }
+                                  catch (Exception e)
+                                  {
+
+                                  }
+                              })">Login</button>
+        </div>
+    </center>
+
+}
+else
+{
+    <center>
+        <div class="btn-group-vertical">
+            <h2>Create new God user</h2>
+            <br/>
+            <hr/>
+            <br/>
+            <input @bind="User.Username" placeholder="Username" type="text" required/>
+            <input @bind="User.Email" placeholder="Email" type="email" required/>
+            <input @bind="User.HashedPwd" placeholder="Password" type="password" required/>
+            <input placeholder="Confirmation" type="password" required/>
+            @*<InputCheckbox Value="User.EmailOtp">Require email OTP (beta)</InputCheckbox>*@
+            <button type="submit" @onclick="@(()=>{
+                                                  if (User.Username.Length > 4
+                                                      && User.HashedPwd.Length > 6
+                                                      && User.Email.Contains('@'))
+                                                  {
+                                                      User.Perms = BasePermissions.God;
+                                                      Db.Users.InsertOne(User);
+                                                  }
+                                              })">Create first user</button>
+        </div>
+    </center>
+}
+
+
 
 @code {
+    [Parameter]
+    public Action<bool> SetAuthStat { get; set; }
 
+    User User = new User();
+    string Info = string.Empty;
+    bool GoodLogin = false;
 }
