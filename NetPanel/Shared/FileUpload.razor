@@ -1,15 +1,18 @@
-﻿@using System.IO
+﻿@page "/filetest"
+
+@using System.IO
 @using NetPanel.Data
+
+
+
 <h3>Upload files to </h3>
 
 <InputFile multiple OnChange="HandleFileSelected" />
 
 @if (Files != null)
 {
-    <h3>Uploading files...</h3>
-    <a class="oi-loop-circular alert-primary"></a>
-
-
+    <h3>Uploading @Files.Count files...</h3>
+    <a class="oi-play-circle"></a>
 }
 
 @code {
