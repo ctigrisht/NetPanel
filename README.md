@@ -5,6 +5,7 @@ Panel for managing apps hosted on a linux machine
 All help is appreciated, just message me on discord `flkXI#3462`
 
 ## Requirements
+* Ubuntu/Debian distribution that supports `sudo apt install`
 * Local MongoDB install
 * .NET Core 3.1 Runtime (or compile as self contained, see https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish)
 
